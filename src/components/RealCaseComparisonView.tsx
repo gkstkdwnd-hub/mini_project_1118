@@ -1,13 +1,20 @@
 import React, { useMemo, useState } from 'react';
-import { ArrowLeftRight, Sun } from 'lucide-react';
+import { ArrowLeftRight, Newspaper, Sun } from 'lucide-react';
 import {
   AnalysisResult,
   computeHourlyMinDemandStats,
 } from '../utils/kpxParser';
+import { LiveDemandCard } from './LiveDemandCard';
+import { MoreRealCasesCard } from './MoreRealCasesCard';
+import { NewsFeed } from './NewsFeed';
 
 interface RealCaseComparisonViewProps {
   analysis: AnalysisResult | null;
   onGoToSummary: () => void;
+  /** 이야기 화면에 넣을 때는 실시간 카드가 1막에 이미 있어서 숨긴다. */
+  hideLive?: boolean;
+  /** 덕 커브 관련 최신 기사 카드를 숨긴다. */
+  hideNews?: boolean;
 }
 
 const HOURS = Array.from({ length: 24 }, (_, idx) => idx + 1);
@@ -15,6 +22,8 @@ const HOURS = Array.from({ length: 24 }, (_, idx) => idx + 1);
 export const RealCaseComparisonView: React.FC<RealCaseComparisonViewProps> = ({
   analysis,
   onGoToSummary,
+  hideLive = false,
+  hideNews = false,
 }) => {
   const [caseHourFilter, setCaseHourFilter] = useState<'all' | number>('all');
 
@@ -61,17 +70,19 @@ export const RealCaseComparisonView: React.FC<RealCaseComparisonViewProps> = ({
           className="bg-slate-100 border border-slate-200 rounded-2xl px-4 py-3 flex flex-wrap items-center justify-between gap-2 text-slate-700"
         >
           <span className="text-xs font-medium">
-            데이터 요약 탭에서 전력수요 및 태양광 파일을 먼저 올려 주세요.
+            ‘내 데이터’ 탭에서 전력수요 및 태양광 파일을 먼저 올려 주세요.
           </span>
           <button
             type="button"
             onClick={onGoToSummary}
             className="text-xs font-semibold text-teal-700 hover:underline cursor-pointer"
           >
-            데이터 요약으로 이동
+            내 데이터로 이동
           </button>
         </div>
       )}
+
+      {!hideLive && <LiveDemandCard analysis={analysis} />}
 
       {/* Real-World Case Comparison Card */}
       <section className="flex flex-col w-full rounded-2xl bg-white border border-slate-200 shadow-xs overflow-hidden animate-fade-in">
@@ -287,6 +298,25 @@ export const RealCaseComparisonView: React.FC<RealCaseComparisonViewProps> = ({
           </div>
         </div>
       </section>
+
+      <MoreRealCasesCard analysis={analysis} />
+
+      {!hideNews && (
+      <section className="flex flex-col w-full rounded-2xl bg-white border border-slate-200 shadow-xs overflow-hidden animate-fade-in">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 bg-slate-50/60">
+          <div className="flex items-center gap-2 min-w-0">
+            <div className="w-6 h-6 rounded-lg flex items-center justify-center bg-amber-50 text-amber-700">
+              <Newspaper className="w-3.5 h-3.5" />
+            </div>
+            <h3 className="font-bold text-sm text-slate-900 truncate">덕 커브 관련 최신 기사</h3>
+          </div>
+          <span className="text-[11px] text-slate-500 whitespace-nowrap">덕 커브·출력제어·경부하기</span>
+        </div>
+        <div className="p-4">
+          <NewsFeed topic="duck" limit={6} emptyText="최근 덕 커브 관련 기사를 찾지 못했어요." />
+        </div>
+      </section>
+      )}
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
+import { DuckCurveIllustration } from './DuckCurveIllustration';
 
 export const DuckCurveExplanationCard: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -25,55 +26,9 @@ export const DuckCurveExplanationCard: React.FC = () => {
 
       {!isCollapsed && (
         <div className="p-4 sm:p-5 flex flex-col md:flex-row gap-5 items-center">
-          {/* Left SVG Illustration */}
-          <div className="relative w-full md:w-56 h-36 bg-slate-50/80 rounded-xl border border-slate-200/80 p-2 flex items-center justify-center shrink-0">
-            <svg viewBox="0 0 200 120" className="w-full h-full" aria-label="덕 커브 예시 그림">
-              {/* Corner label */}
-              <text x="168" y="14" fontSize="8" fill="#94a3b8" fontWeight="500">
-                예시 그림
-              </text>
-
-              {/* Duck Silhouette Outline (Light gray) */}
-              <path
-                d="M 40,75 C 35,60 45,45 60,40 C 70,35 85,38 92,48 C 105,42 120,40 135,45 C 150,55 160,75 155,95 C 150,105 130,110 90,110 C 50,110 42,90 40,75 Z"
-                fill="none"
-                stroke="#cbd5e1"
-                strokeWidth="1.5"
-                strokeDasharray="3 3"
-              />
-              {/* Duck head & beak */}
-              <path
-                d="M 60,40 C 52,40 48,32 52,26 C 56,20 68,22 70,30 L 75,28"
-                fill="none"
-                stroke="#cbd5e1"
-                strokeWidth="1.5"
-              />
-
-              {/* Duck Curve Overlay (Orange) */}
-              <path
-                d="M 25,50 Q 50,45 75,70 Q 100,100 120,70 Q 140,30 175,45"
-                fill="none"
-                stroke="#ea580c"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-              />
-
-              {/* Labels for Duck parts */}
-              <text x="95" y="105" fontSize="9" fill="#c2410c" fontWeight="bold" textAnchor="middle">
-                오리 배(낮)
-              </text>
-              <circle cx="100" cy="94" r="2.5" fill="#ea580c" />
-
-              <text x="125" y="62" fontSize="9" fill="#c2410c" fontWeight="bold">
-                오리 목(저녁)
-              </text>
-              <circle cx="120" cy="70" r="2.5" fill="#ea580c" />
-
-              <text x="145" y="28" fontSize="9" fill="#c2410c" fontWeight="bold">
-                오리 머리(밤)
-              </text>
-              <circle cx="170" cy="43" r="2.5" fill="#ea580c" />
-            </svg>
+          {/* Left custom illustration */}
+          <div className="w-full md:w-[24rem] lg:w-[28rem] shrink-0 rounded-2xl overflow-hidden border border-amber-200/70 shadow-sm">
+            <DuckCurveIllustration />
           </div>
 
           {/* Right Exact Explanations */}
